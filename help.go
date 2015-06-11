@@ -38,14 +38,6 @@ HKHEADER
   A NL-separated list of fields to set in each API request header.
   These override any fields set by hk if they have the same name.
 
-HKPATH
-
-  A list of directories to search for plugins. This variable takes
-  the same form as the system PATH var. If unset, the value is
-  taken to be "/usr/local/lib/hk/plugin" on Unix.
-
-  See 'hk help plugins' for information about the plugin interface.
-
 HKDEBUG
 
   When this is set, hk prints the wire representation of each API
@@ -125,12 +117,6 @@ func runHelp(cmd *Command, args []string) {
 		}
 	}
 
-	if lookupPlugin(args[0]) != "" {
-		_, _, long := pluginInfo(string(args[0]))
-		log.Println(long)
-		return
-	}
-
 	log.Printf("Unknown help topic: %q. Run 'hk help'.\n", args[0])
 	os.Exit(2)
 }
@@ -151,8 +137,6 @@ Usage: hk <command> [-a <app or remote>] [options] [arguments]
 Commands:
 {{range .Commands}}{{if .Runnable}}{{if .List}}
     {{.Name | printf (print "%-" $.MaxRunListName "s")}}  {{.Short}}{{end}}{{end}}{{end}}
-{{range .Plugins}}
-    {{.Name | printf (print "%-" $.MaxRunListName "s")}}  {{.Short}} (plugin){{end}}
 
 Run 'hk help [command]' for details.
 
@@ -174,44 +158,19 @@ Run 'hk help [command]' for details.
 `[1:]))
 
 func printUsageTo(w io.Writer) {
-	var plugins []plugin
-	for _, path := range strings.Split(hkPath, ":") {
-		d, err := os.Open(path)
-		if err != nil {
-			if os.IsNotExist(err) {
-				continue
-			}
-			printFatal(err.Error())
-		}
-		fi, err := d.Readdir(-1)
-		if err != nil {
-			printFatal(err.Error())
-		}
-		for _, f := range fi {
-			if !f.IsDir() && f.Mode()&0111 != 0 {
-				plugins = append(plugins, plugin(f.Name()))
-			}
-		}
-	}
-
 	var runListNames []string
 	for i := range commands {
 		if commands[i].Runnable() && commands[i].List() {
 			runListNames = append(runListNames, commands[i].Name())
 		}
 	}
-	for i := range plugins {
-		runListNames = append(runListNames, plugins[i].Name())
-	}
 
 	usageTemplate.Execute(w, struct {
 		Commands       []*Command
-		Plugins        []plugin
 		Dev            bool
 		MaxRunListName int
 	}{
 		commands,
-		plugins,
 		Version == "dev",
 		maxStrLen(runListNames),
 	})
