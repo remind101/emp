@@ -8,15 +8,12 @@ import (
 	"os"
 	"strings"
 
-	"github.com/heroku/hk/Godeps/_workspace/src/github.com/bgentry/heroku-go"
-	"github.com/heroku/hk/postgresql"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
 )
 
 type Clients struct {
 	ApiURL string
 	Client *heroku.Client
-
-	PgClient *postgresql.Client
 }
 
 func New(nrc *NetRc, agent string) (*Clients, error) {
@@ -48,42 +45,19 @@ func New(nrc *NetRc, agent string) (*Clients, error) {
 		UserAgent: userAgent,
 		Debug:     debug,
 	}
-	ste.PgClient = &postgresql.Client{
-		Username:  user,
-		Password:  pass,
-		UserAgent: userAgent,
-		Debug:     debug,
-	}
 
 	tr := &http.Transport{}
 	ste.Client.HTTP = &http.Client{Transport: tr}
-	ste.PgClient.HTTP = &http.Client{Transport: tr}
 
 	if disableSSLVerify || os.Getenv("HEROKU_SSL_VERIFY") == "disable" {
 		tr.TLSClientConfig = &tls.Config{
 			InsecureSkipVerify: true,
 		}
 	}
-	if s := os.Getenv("HEROKU_POSTGRESQL_HOST"); s != "" {
-		ste.PgClient.StarterURL = "https://" + s +
-			".herokuapp.com" + postgresql.DefaultAPIPath
-
-		ste.PgClient.URL = "https://" + s + ".herokuapp.com" +
-			postgresql.DefaultAPIPath
-	}
-	if s := os.Getenv("SHOGUN"); s != "" {
-		ste.PgClient.URL = "https://shogun-" + s +
-			".herokuapp.com" + postgresql.DefaultAPIPath
-	}
 	ste.Client.AdditionalHeaders = http.Header{}
-	ste.PgClient.AdditionalHeaders = http.Header{}
 	for _, h := range strings.Split(os.Getenv("HKHEADER"), "\n") {
 		if i := strings.Index(h, ":"); i >= 0 {
 			ste.Client.AdditionalHeaders.Set(
-				strings.TrimSpace(h[:i]),
-				strings.TrimSpace(h[i+1:]),
-			)
-			ste.PgClient.AdditionalHeaders.Set(
 				strings.TrimSpace(h[:i]),
 				strings.TrimSpace(h[i+1:]),
 			)
@@ -102,7 +76,6 @@ func New(nrc *NetRc, agent string) (*Clients, error) {
 		}
 
 		ste.Client.HerokuAgentSocket = herokuAgentSocket
-		ste.PgClient.HerokuAgentSocket = herokuAgentSocket
 	}
 
 	return &ste, nil

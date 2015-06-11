@@ -13,10 +13,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/heroku/hk/Godeps/_workspace/src/github.com/bgentry/heroku-go"
-	"github.com/heroku/hk/Godeps/_workspace/src/github.com/mgutz/ansi"
-	"github.com/heroku/hk/hkclient"
-	"github.com/heroku/hk/term"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/mgutz/ansi"
+	"github.com/remind101/emp/hkclient"
+	"github.com/remind101/emp/term"
 )
 
 var nrc *hkclient.NetRc

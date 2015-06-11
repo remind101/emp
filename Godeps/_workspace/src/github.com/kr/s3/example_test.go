@@ -2,7 +2,7 @@ package s3_test
 
 import (
 	"fmt"
-	"github.com/heroku/hk/Godeps/_workspace/src/github.com/kr/s3"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/kr/s3"
 	"log"
 	"net/http"
 	"os"

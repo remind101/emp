@@ -11,7 +11,7 @@ The MIT License (MIT)
 Copyright © 2013 - 2014 Heroku, Keith Rarick and the hk
 contributors. A full list of contributors is available on GitHub:
 
-    https://github.com/heroku/hk/graphs/contributors
+    https://github.com/remind101/emp/graphs/contributors
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -34,7 +34,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 For source code, to contribute to hk, or just to say hello:
 
-    https://github.com/heroku/hk
+    https://github.com/remind101/emp
 
 Happy hacking!
 `,

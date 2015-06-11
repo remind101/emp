@@ -8,17 +8,15 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/heroku/hk/Godeps/_workspace/src/github.com/bgentry/heroku-go"
-	flag "github.com/heroku/hk/Godeps/_workspace/src/github.com/bgentry/pflag"
-	"github.com/heroku/hk/Godeps/_workspace/src/github.com/mgutz/ansi"
-	"github.com/heroku/hk/hkclient"
-	"github.com/heroku/hk/postgresql"
-	"github.com/heroku/hk/rollbar"
-	"github.com/heroku/hk/term"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
+	flag "github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/pflag"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/mgutz/ansi"
+	"github.com/remind101/emp/hkclient"
+	"github.com/remind101/emp/term"
 )
 
 var (
-	apiURL = "https://api.heroku.com"
+	apiURL = "http://localhost:8080"
 	stdin  = bufio.NewReader(os.Stdin)
 )
 
@@ -129,7 +127,6 @@ var commands = []*Command{
 var (
 	flagApp   string
 	client    *heroku.Client
-	pgclient  *postgresql.Client
 	hkAgent   = "hk/" + Version + " (" + runtime.GOOS + "; " + runtime.GOARCH + ")"
 	userAgent = hkAgent + " " + heroku.DefaultUserAgent
 )
@@ -142,7 +139,6 @@ func initClients() {
 	}
 
 	client = suite.Client
-	pgclient = suite.PgClient
 	apiURL = suite.ApiURL
 }
 
@@ -221,27 +217,9 @@ func main() {
 	printFatal("exec error: %s", err)
 }
 
-var rollbarClient = &rollbar.Client{
-	AppName:    "hk",
-	AppVersion: Version,
-	Endpoint:   "https://api.rollbar.com/api/1/item/",
-	Token:      "d344db7a09fa481e983694bfa326e6d9",
-}
-
 func recoverPanic() {
 	if Version != "dev" {
 		if rec := recover(); rec != nil {
-			message := ""
-			switch rec := rec.(type) {
-			case error:
-				message = rec.Error()
-			default:
-				message = fmt.Sprintf("%v", rec)
-			}
-			if err := rollbarClient.Report(message); err != nil {
-				printError("reporting crash failed: %s", err.Error())
-				panic(rec)
-			}
 			printFatal("hk encountered and reported an internal client error")
 		}
 	}

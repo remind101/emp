@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/heroku/hk/Godeps/_workspace/src/github.com/gorilla/context"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/gorilla/context"
 )
 
 type routeTest struct {

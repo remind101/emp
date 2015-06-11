@@ -12,8 +12,8 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/heroku/hk/Godeps/_workspace/src/github.com/bgentry/heroku-go"
-	"github.com/heroku/hk/term"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
+	"github.com/remind101/emp/term"
 )
 
 var (
