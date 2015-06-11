@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/testnet"
+	"github.com/bgentry/testnet"
 )
 
 //

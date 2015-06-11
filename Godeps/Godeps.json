@@ -1,15 +1,10 @@
 {
-	"ImportPath": "github.com/heroku/hk",
-	"GoVersion": "go1.2.1",
+	"ImportPath": "github.com/remind101/emp",
+	"GoVersion": "go1.4.2",
 	"Packages": [
 		"./..."
 	],
 	"Deps": [
-		{
-			"ImportPath": "bitbucket.org/kardianos/osext",
-			"Comment": "null-9",
-			"Rev": "364fb577de68fb646c4cb39cc0e09c887ee16376"
-		},
 		{
 			"ImportPath": "code.google.com/p/go-uuid/uuid",
 			"Comment": "null-10",
@@ -32,44 +27,28 @@
 			"Rev": "48b5b9e3fedbde05cdb5f97c0b0930bda49e5e7a"
 		},
 		{
-			"ImportPath": "github.com/bgentry/testnet",
-			"Rev": "05450cdcf16c84d5b08dc9bb617250aa7b63c8ff"
+			"ImportPath": "github.com/docker/docker/pkg/jsonmessage",
+			"Comment": "v1.4.1-3107-g5221fd2",
+			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
 		},
 		{
-			"ImportPath": "github.com/bmizerany/pq",
-			"Rev": "284a1d41dcc27fe8ccc413c339464698ab99f6d1"
+			"ImportPath": "github.com/docker/docker/pkg/term",
+			"Comment": "v1.4.1-3107-g5221fd2",
+			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
 		},
 		{
-			"ImportPath": "github.com/gorilla/context",
-			"Rev": "1be7a086a5fd6440ef16fe96baeda0c78282b980"
+			"ImportPath": "github.com/docker/docker/pkg/timeutils",
+			"Comment": "v1.4.1-3107-g5221fd2",
+			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
 		},
 		{
-			"ImportPath": "github.com/gorilla/mux",
-			"Rev": "9ede152210fa25c1377d33e867cb828c19316445"
-		},
-		{
-			"ImportPath": "github.com/inconshreveable/go-update",
-			"Rev": "3f0466666779bd2143f368a207b0641f0ed536e8"
-		},
-		{
-			"ImportPath": "github.com/kr/binarydist",
-			"Rev": "9955b0ab8708602d411341e55fffd7e0700f86bd"
-		},
-		{
-			"ImportPath": "github.com/kr/s3",
-			"Rev": "bf9eae96b5ce016e308439d4415421e4392b20c3"
-		},
-		{
-			"ImportPath": "github.com/kr/secureheader",
-			"Rev": "08f5355a148253e68cbd0a230b3803510e4419b2"
+			"ImportPath": "github.com/docker/docker/pkg/units",
+			"Comment": "v1.4.1-3107-g5221fd2",
+			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
 		},
 		{
 			"ImportPath": "github.com/mgutz/ansi",
 			"Rev": "376eb392d7d7e2ae025da0037c73cf8c20a428d8"
-		},
-		{
-			"ImportPath": "github.com/stretchr/testify/assert",
-			"Rev": "4c55a02a9da3f9b9daf583332a2a82c38a4521be"
 		}
 	]
 }

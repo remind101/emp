@@ -100,6 +100,7 @@ var commands = []*Command{
 	cmdDomains,
 	cmdDomainAdd,
 	cmdDomainRemove,
+	cmdDeploy,
 	cmdVersion,
 	cmdHelp,
 
