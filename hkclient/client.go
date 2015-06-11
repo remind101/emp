@@ -25,7 +25,7 @@ func New(nrc *NetRc, agent string) (*Clients, error) {
 
 	disableSSLVerify := false
 	ste.ApiURL = heroku.DefaultAPIURL
-	if s := os.Getenv("HEROKU_API_URL"); s != "" {
+	if s := os.Getenv("EMPIRE_API_URL"); s != "" {
 		ste.ApiURL = s
 		disableSSLVerify = true
 	}

@@ -28,7 +28,7 @@ The arguments to the plugin are the arguments to hk, not including
 
 Several environment variables will also be set:
 
-HEROKU_API_URL
+EMPIRE_API_URL
 
   This follows the same format as the variable read by hk. For a
   plugin, this variable is always set and it always includes a
@@ -36,20 +36,20 @@ HEROKU_API_URL
 
   (Run 'hk help environ' for details of the format.)
 
-HKUSER
+EMPUSER
 
-  The username from HEROKU_API_URL, for convenience.
+  The username from EMPIRE_API_URL, for convenience.
 
-HKPASS
+EMPPASS
 
-  The password from HEROKU_API_URL, for convenience.
+  The password from EMPIRE_API_URL, for convenience.
 
-HKHOST
+EMPHOST
 
-  The hostname (and port, if any) from HEROKU_API_URL, for
+  The hostname (and port, if any) from EMPIRE_API_URL, for
   convenience.
 
-HKAPP
+EMPAPP
 
   The name of the heroku app in the current directory, if there is a
   git remote named "heroku" with the proper URL format.
@@ -95,11 +95,11 @@ func execPlugin(path string, args []string) error {
 	u.User = url.UserPassword("", hkpass)
 	hkapp, _ := app()
 	env := []string{
-		"HEROKU_API_URL=" + u.String(),
-		"HKAPP=" + hkapp,
-		"HKUSER=" + hkuser,
-		"HKPASS=" + hkpass,
-		"HKHOST=" + u.Host,
+		"EMPIRE_API_URL=" + u.String(),
+		"EMPAPP=" + hkapp,
+		"EMPUSER=" + hkuser,
+		"EMPPASS=" + hkpass,
+		"EMPHOST=" + u.Host,
 		"HKVERSION=" + Version,
 	}
 

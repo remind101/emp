@@ -19,7 +19,7 @@ var helpEnviron = &Command{
 	Long: `
 Several environment variables affect hk's behavior.
 
-HEROKU_API_URL
+EMPIRE_API_URL
 
   The base URL hk will use to make api requests in the format:
   https://[username][:password]@host[:port]/

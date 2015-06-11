@@ -88,7 +88,7 @@ func TestSSLDisable(t *testing.T) {
 
 func TestHerokuAPIURL(t *testing.T) {
 	newURL := "https://api.otherheroku.com"
-	os.Setenv("HEROKU_API_URL", newURL)
+	os.Setenv("EMPIRE_API_URL", newURL)
 	initClients()
 
 	if client.URL != newURL {
@@ -100,7 +100,7 @@ func TestHerokuAPIURL(t *testing.T) {
 	}
 
 	// cleanup
-	os.Setenv("HEROKU_API_URL", "")
+	os.Setenv("EMPIRE_API_URL", "")
 }
 
 func TestHerokuPostgresqlHost(t *testing.T) {

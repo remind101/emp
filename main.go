@@ -252,7 +252,7 @@ func app() (string, error) {
 		return flagApp, nil
 	}
 
-	if app := os.Getenv("HKAPP"); app != "" {
+	if app := os.Getenv("EMPAPP"); app != "" {
 		return app, nil
 	}
 
