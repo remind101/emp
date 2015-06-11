@@ -95,9 +95,9 @@ func runSSLCertAdd(cmd *Command, args []string) {
 
 	if len(endpoints) == 0 {
 		opts := heroku.SSLEndpointCreateOpts{Preprocess: &preprocess}
-		ep, err := client.SSLEndpointCreate(appname, cert, key, &opts)
+		_, err := client.SSLEndpointCreate(appname, cert, key, &opts)
 		must(err)
-		fmt.Printf("Added cert for %s at %s.\n", appname, ep.Cname)
+		fmt.Printf("Added cert for %s.\n", appname)
 		return
 	}
 
@@ -108,7 +108,7 @@ func runSSLCertAdd(cmd *Command, args []string) {
 	}
 	_, err = client.SSLEndpointUpdate(appname, endpoints[0].Id, &opts)
 	must(err)
-	fmt.Printf("Updated cert for %s at %s.\n", appname, endpoints[0].Cname)
+	fmt.Printf("Updated cert for %s.\n", appname)
 }
 
 var cmdSSLDestroy = &Command{
