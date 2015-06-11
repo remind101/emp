@@ -16,7 +16,7 @@ var cmdDeploy = &Command{
 	Long: `
 Deploy is used to deploy a docker image to an app.
 Examples:
-    $ hk deploy remind101/acme-inc:latest
+    $ emp deploy remind101/acme-inc:latest
     Pulling repository remind101/acme-inc
     345c7524bc96: Download complete
     a1dd7097a8e8: Download complete
@@ -27,7 +27,7 @@ Examples:
     133fcef559c4: Download complete
     Status: Image is up to date for remind101/acme-inc:latest
     Status: Created new release v1 for acme-inc
-    $ hk releases
+    $ emp releases
     v1    Jan 1 12:55  Deploy remind101/acme-inc:latest
 `,
 }

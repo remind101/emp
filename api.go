@@ -9,7 +9,7 @@ import (
 var cmdAPI = &Command{
 	Run:      runAPI,
 	Usage:    "api <method> <path>",
-	Category: "hk",
+	Category: "emp",
 	Short:    "make a single API request" + extra,
 	Long: `
 The api command is a convenient but low-level way to send requests
@@ -18,15 +18,15 @@ using the given method on the given path. For methods PUT, PATCH,
 and POST, it uses stdin unmodified as the request body. It prints
 the response unmodified on stdout.
 
-Method name input will be upcased, so both 'hk api GET /apps' and
-'hk api get /apps' are valid commands.
+Method name input will be upcased, so both 'emp api GET /apps' and
+'emp api get /apps' are valid commands.
 
-As with any hk command, the behavior of hk api is controlled by
-various environment variables. See 'hk help environ' for details.
+As with any emp command, the behavior of emp api is controlled by
+various environment variables. See 'emp help environ' for details.
 
 Examples:
 
-    $ hk api GET /apps/myapp | jq .
+    $ emp api GET /apps/myapp | jq .
     {
       "name": "myapp",
       "id": "app123@heroku.com",
@@ -39,7 +39,7 @@ Examples:
     Content-Type: application/x-www-form-urlencoded
     Accept: application/json
     '
-    $ printf 'type=web&qty=2' | hk api POST /apps/myapp/ps/scale
+    $ printf 'type=web&qty=2' | emp api POST /apps/myapp/ps/scale
     2
 `,
 }

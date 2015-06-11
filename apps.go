@@ -22,11 +22,11 @@ time the app was created, if it's never been released).
 
 Examples:
 
-    $ hk apps
+    $ emp apps
     myapp     user@test.com         us  Jan 2 12:34
     myapp-eu  user@longdomainname…  eu  Jan 2 12:35
 
-    $ hk apps myapp
+    $ emp apps myapp
     myapp  user@test.com  us  Jan 2 12:34
 `,
 }

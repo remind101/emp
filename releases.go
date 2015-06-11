@@ -31,16 +31,16 @@ Options:
 
 Examples:
 
-    $ hk releases
+    $ emp releases
     v1  bob@test.com  Jun 12 18:28  Deploy 3ae20c2
     v2  john@me.com   Jun 13 18:14  Deploy 0fda0ae
     v3  john@me.com   Jun 13 18:31  Rollback to v2
 
-    $ hk releases -n 2
+    $ emp releases -n 2
     v2  john  Jun 13 18:14  Deploy 0fda0ae
     v3  john  Jun 13 18:31  Rollback to v2
 
-    $ hk releases 1 3
+    $ emp releases 1 3
     v1  bob@test.com  Jun 12 18:28  Deploy 3ae20c2
     v3  john@me.com   Jun 13 18:31  Rollback to v2
 `,
@@ -169,7 +169,7 @@ release-info shows detailed information about a release.
 
 Examples:
 
-    $ hk release-info v116
+    $ emp release-info v116
     Version:  v116
     By:       user@test.com
     Change:   Deploy 62b3059
@@ -212,7 +212,7 @@ the app's dynos on the new release.
 
 Examples:
 
-    $ hk rollback v4
+    $ emp rollback v4
     Rolled back myapp to v4 as v7.
 `,
 }

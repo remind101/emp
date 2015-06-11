@@ -28,20 +28,20 @@ type Command struct {
 
 	Usage    string // first word is the command name
 	Category string // i.e. "App", "Account", etc.
-	Short    string // `hk help` output
-	Long     string // `hk help cmd` output
+	Short    string // `emp help` output
+	Long     string // `emp help cmd` output
 }
 
 func (c *Command) PrintUsage() {
 	if c.Runnable() {
-		fmt.Fprintf(os.Stderr, "Usage: hk %s\n", c.FullUsage())
+		fmt.Fprintf(os.Stderr, "Usage: emp %s\n", c.FullUsage())
 	}
-	fmt.Fprintf(os.Stderr, "Use 'hk help %s' for more information.\n", c.Name())
+	fmt.Fprintf(os.Stderr, "Use 'emp help %s' for more information.\n", c.Name())
 }
 
 func (c *Command) PrintLongUsage() {
 	if c.Runnable() {
-		fmt.Printf("Usage: hk %s\n\n", c.FullUsage())
+		fmt.Printf("Usage: emp %s\n\n", c.FullUsage())
 	}
 	fmt.Println(strings.Trim(c.Long, "\n"))
 }
@@ -80,7 +80,7 @@ func (c *Command) ShortExtra() string {
 	return c.Short[:len(c.Short)-len(extra)]
 }
 
-// Running `hk help` will list commands in this order.
+// Running `emp help` will list commands in this order.
 var commands = []*Command{
 	cmdCreate,
 	cmdApps,
@@ -109,7 +109,7 @@ var commands = []*Command{
 	helpMore,
 	helpAbout,
 
-	// listed by hk help more
+	// listed by emp help more
 	cmdAPI,
 	cmdAuthorize,
 	cmdCreds,
@@ -208,14 +208,14 @@ func main() {
 	if g := suggest(args[0]); len(g) > 0 {
 		fmt.Fprintf(os.Stderr, "Possible alternatives: %v\n", strings.Join(g, " "))
 	}
-	fmt.Fprintf(os.Stderr, "Run 'hk help' for usage.\n")
+	fmt.Fprintf(os.Stderr, "Run 'emp help' for usage.\n")
 	os.Exit(2)
 }
 
 func recoverPanic() {
 	if Version != "dev" {
 		if rec := recover(); rec != nil {
-			printFatal("hk encountered and reported an internal client error")
+			printFatal("emp encountered and reported an internal client error")
 		}
 	}
 }

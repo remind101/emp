@@ -14,14 +14,14 @@ import (
 
 var helpEnviron = &Command{
 	Usage:    "environ",
-	Category: "hk",
-	Short:    "environment variables used by hk",
+	Category: "emp",
+	Short:    "environment variables used by emp",
 	Long: `
-Several environment variables affect hk's behavior.
+Several environment variables affect emp's behavior.
 
 EMPIRE_API_URL
 
-  The base URL hk will use to make api requests in the format:
+  The base URL emp will use to make api requests in the format:
   https://[username][:password]@host[:port]/
 
   If username and password are present in the URL, they will
@@ -31,16 +31,16 @@ EMPIRE_API_URL
 
 HEROKU_SSL_VERIFY
 
-  When set to disable, hk will insecurely skip SSL verification.
+  When set to disable, emp will insecurely skip SSL verification.
 
 HKHEADER
 
   A NL-separated list of fields to set in each API request header.
-  These override any fields set by hk if they have the same name.
+  These override any fields set by emp if they have the same name.
 
 HKDEBUG
 
-  When this is set, hk prints the wire representation of each API
+  When this is set, emp prints the wire representation of each API
   request to stderr just before sending the request, and prints the
   response. This will most likely include your secret API key in
   the Authorization header field, so be careful with the output.
@@ -50,9 +50,9 @@ HKDEBUG
 var cmdVersion = &Command{
 	Run:      runVersion,
 	Usage:    "version",
-	Category: "hk",
-	Short:    "show hk version",
-	Long:     `Version shows the hk client version string.`,
+	Category: "emp",
+	Short:    "show emp version",
+	Long:     `Version shows the emp client version string.`,
 }
 
 func runVersion(cmd *Command, args []string) {
@@ -61,27 +61,27 @@ func runVersion(cmd *Command, args []string) {
 
 var cmdHelp = &Command{
 	Usage:    "help [<topic>]",
-	Category: "hk",
+	Category: "emp",
 	Long:     `Help shows usage for a command or other topic.`,
 }
 
 var helpMore = &Command{
 	Usage:    "more",
-	Category: "hk",
+	Category: "emp",
 	Short:    "additional commands, less frequently used",
 	Long:     "(not displayed; see special case in runHelp)",
 }
 
 var helpCommands = &Command{
 	Usage:    "commands",
-	Category: "hk",
+	Category: "emp",
 	Short:    "list all commands with usage",
 	Long:     "(not displayed; see special case in runHelp)",
 }
 
 var helpStyleGuide = &Command{
 	Usage:    "styleguide",
-	Category: "hk",
+	Category: "emp",
 	Short:    "generate an html styleguide for all commands with usage",
 	Long:     "(not displayed; see special case in runHelp)",
 }
@@ -117,7 +117,7 @@ func runHelp(cmd *Command, args []string) {
 		}
 	}
 
-	log.Printf("Unknown help topic: %q. Run 'hk help'.\n", args[0])
+	log.Printf("Unknown help topic: %q. Run 'emp help'.\n", args[0])
 	os.Exit(2)
 }
 
@@ -131,21 +131,21 @@ func maxStrLen(strs []string) (strlen int) {
 }
 
 var usageTemplate = template.Must(template.New("usage").Parse(`
-Usage: hk <command> [-a <app or remote>] [options] [arguments]
+Usage: emp <command> [-a <app or remote>] [options] [arguments]
 
 
 Commands:
 {{range .Commands}}{{if .Runnable}}{{if .List}}
     {{.Name | printf (print "%-" $.MaxRunListName "s")}}  {{.Short}}{{end}}{{end}}{{end}}
 
-Run 'hk help [command]' for details.
+Run 'emp help [command]' for details.
 
 
 Additional help topics:
 {{range .Commands}}{{if not .Runnable}}
     {{.Name | printf "%-8s"}}  {{.Short}}{{end}}{{end}}
 
-{{if .Dev}}This dev build of hk cannot auto-update itself.
+{{if .Dev}}This dev build of emp cannot auto-update itself.
 {{end}}`[1:]))
 
 var extraTemplate = template.Must(template.New("usage").Parse(`
@@ -153,7 +153,7 @@ Additional commands:
 {{range .Commands}}{{if .Runnable}}{{if .ListAsExtra}}
     {{.Name | printf (print "%-" $.MaxRunExtraName "s")}}  {{.ShortExtra}}{{end}}{{end}}{{end}}
 
-Run 'hk help [command]' for details.
+Run 'emp help [command]' for details.
 
 `[1:]))
 
@@ -200,7 +200,7 @@ func printAllUsage() {
 	sort.Sort(cl)
 	for i := range cl {
 		if cl[i].Runnable() {
-			listRec(w, "hk "+cl[i].FullUsage(), "# "+cl[i].Short)
+			listRec(w, "emp "+cl[i].FullUsage(), "# "+cl[i].Short)
 		}
 	}
 }
@@ -281,7 +281,7 @@ var styleGuideTemplate = template.Must(template.New("styleguide").Delims("{{{", 
 <!DOCTYPE html>
 <html>
   <head>
-    <title>hk style guide</title>
+    <title>emp style guide</title>
 
     <style>
       body {
@@ -342,7 +342,7 @@ var styleGuideTemplate = template.Must(template.New("styleguide").Delims("{{{", 
         <tr>
           <td>
             <span class='prompt'>$</span>
-            <span class='command'>hk</span>
+            <span class='command'>emp</span>
             <span class='root'>{{root}}</span>
             <span class='arguments'>{{arguments}}</span>
           </td>

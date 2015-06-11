@@ -39,19 +39,19 @@ Options:
 
 Examples:
 
-    $ hk run echo "hello"
+    $ emp run echo "hello"
     Running ` + "`echo \"hello\"`" + ` on myapp as run.1234:
     "hello"
 
-    $ hk run console
+    $ emp run console
     Running ` + "`console`" + ` on myapp as run.5678:
     Loading production environment (Rails 3.2.14)
     irb(main):001:0> ...
 
-    $ hk run -d -s 2X bin/my_worker
+    $ emp run -d -s 2X bin/my_worker
     Ran ` + "`bin/my_worker`" + ` on myapp as run.4321, detached.
 
-    $ hk run -a myapp -- ls -a /
+    $ emp run -a myapp -- ls -a /
     Running ` + "`ls -a bin /`" + ` on myapp as run.8650:
     /:
     .  ..  app  bin  dev  etc  home  lib  lib64  lost+found  proc  sbin  tmp  usr  var

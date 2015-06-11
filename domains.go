@@ -20,7 +20,7 @@ Lists domains.
 
 Examples:
 
-    $ hk domains
+    $ emp domains
     test.herokuapp.com
     www.test.com
 `,

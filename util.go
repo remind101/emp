@@ -110,10 +110,10 @@ func must(err error) {
 		if herror, ok := err.(heroku.Error); ok {
 			switch herror.Id {
 			case "two_factor":
-				printError(err.Error() + " Authorize with `hk authorize`.")
+				printError(err.Error() + " Authorize with `emp authorize`.")
 				os.Exit(79)
 			case "unauthorized":
-				printFatal(err.Error() + " Log in with `hk login`.")
+				printFatal(err.Error() + " Log in with `emp login`.")
 			}
 		}
 		printFatal(err.Error())

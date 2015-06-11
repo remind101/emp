@@ -23,10 +23,10 @@ Options:
 
 Examples:
 
-    $ hk create
+    $ emp create
     Created dodging-samurai-42.
 
-    $ hk create -r eu myapp
+    $ emp create -r eu myapp
     Created myapp.
 `,
 }

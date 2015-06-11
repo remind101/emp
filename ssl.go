@@ -56,7 +56,7 @@ Options:
 
 Examples:
 
-    $ hk ssl-cert-add cert.pem key.pem
+    $ emp ssl-cert-add cert.pem key.pem
     hobby-dev        $0/mo
 `,
 }
@@ -125,12 +125,12 @@ will prompt for confirmation, or accept confirmation via stdin.
 
 Examples:
 
-    $ hk ssl-destroy
+    $ emp ssl-destroy
     warning: This will destroy the SSL endpoint on myapp. Please type "myapp" to continue:
     > myapp
     Destroyed SSL endpoint on myapp.
 
-    $ echo myapp | hk ssl-destroy
+    $ echo myapp | emp ssl-destroy
     Destroyed SSL endpoint on myapp.
 `,
 }
@@ -168,7 +168,7 @@ Rolls back an SSL endpoint's certificate to the previous version.
 
 Examples:
 
-    $ hk ssl-cert-rollback
+    $ emp ssl-cert-rollback
     Rolled back cert for myapp.
 `,
 }
