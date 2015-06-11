@@ -13,7 +13,7 @@ $ go get -u github.com/remind101/emp
 The basic usage of emp is:
 
 ```
-Usage: emp <command> [-a app] [options] [arguments]
+Usage: EMPIRE_API_URL=<empire api> emp <command> [-a app] [options] [arguments]
 ```
 
 ## Development
