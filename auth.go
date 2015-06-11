@@ -16,7 +16,7 @@ import (
 var cmdAuthorize = &Command{
 	Run:      runAuthorize,
 	Usage:    "authorize",
-	Category: "hk",
+	Category: "emp",
 	Short:    "procure a temporary privileged token" + extra,
 	Long: `
 Have heroku-agent procure and store a temporary privileged token
@@ -24,7 +24,7 @@ that will bypass any requirement for a second authentication factor.
 
 Example:
 
-    $ hk authorize
+    $ emp authorize
     Enter email: user@test.com
 	Enter two-factor auth code: 
     Authorization successful.
@@ -62,7 +62,7 @@ func runAuthorize(cmd *Command, args []string) {
 var cmdCreds = &Command{
 	Run:      runCreds,
 	Usage:    "creds",
-	Category: "hk",
+	Category: "emp",
 	Short:    "show credentials" + extra,
 	Long:     `Creds shows credentials that will be used for API calls.`,
 }
@@ -91,7 +91,7 @@ func runCreds(cmd *Command, args []string) {
 var cmdLogin = &Command{
 	Run:      runLogin,
 	Usage:    "login",
-	Category: "hk",
+	Category: "emp",
 	Short:    "log in to your Heroku account" + extra,
 	Long: `
 Log in with your Heroku credentials. Input is accepted by typing
@@ -100,7 +100,7 @@ on standard input.
 
 Example:
 
-    $ hk login
+    $ emp login
     Enter email: user@test.com
     Enter password: 
     Login successful.
@@ -178,7 +178,7 @@ func readPassword(prompt string) (password string, err error) {
 }
 
 func attemptLogin(username, password, twoFactorCode string) (hostname, token string, err error) {
-	description := "hk login from " + time.Now().UTC().Format(time.RFC3339)
+	description := "emp login from " + time.Now().UTC().Format(time.RFC3339)
 	expires := 2592000 // 30 days
 	opts := heroku.OAuthAuthorizationCreateOpts{
 		Description: &description,
@@ -208,7 +208,7 @@ func attemptLogin(username, password, twoFactorCode string) (hostname, token str
 var cmdLogout = &Command{
 	Run:      runLogout,
 	Usage:    "logout",
-	Category: "hk",
+	Category: "emp",
 	Short:    "log out of your Heroku account" + extra,
 	Long: `
 Log out of your Heroku account and remove credentials from
@@ -216,7 +216,7 @@ this machine.
 
 Example:
 
-    $ hk logout
+    $ emp logout
     Logged out.
 `,
 }

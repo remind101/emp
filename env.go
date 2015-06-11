@@ -45,7 +45,7 @@ Get the value of an env var.
 
 Example:
 
-    $ hk get BUILDPACK_URL
+    $ emp get BUILDPACK_URL
     http://github.com/kr/heroku-buildpack-inline.git
 `,
 }
@@ -75,7 +75,7 @@ Set the value of an env var.
 
 Example:
 
-    $ hk set BUILDPACK_URL=http://github.com/kr/heroku-buildpack-inline.git
+    $ emp set BUILDPACK_URL=http://github.com/kr/heroku-buildpack-inline.git
     Set env vars and restarted myapp.
 `,
 }
@@ -90,7 +90,7 @@ func runSet(cmd *Command, args []string) {
 	for _, arg := range args {
 		i := strings.Index(arg, "=")
 		if i < 0 {
-			printFatal("bad format: %#q. See 'hk help set'", arg)
+			printFatal("bad format: %#q. See 'emp help set'", arg)
 		}
 		val := arg[i+1:]
 		config[arg[:i]] = &val
@@ -111,7 +111,7 @@ Unset an env var.
 
 Example:
 
-    $ hk unset BUILDPACK_URL
+    $ emp unset BUILDPACK_URL
     Unset env vars and restarted myapp.
 `,
 }

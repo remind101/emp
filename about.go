@@ -2,8 +2,8 @@ package main
 
 var helpAbout = &Command{
 	Usage:    "about",
-	Category: "hk",
-	Short:    "information about hk (e.g. copyright, license, etc.)",
+	Category: "emp",
+	Short:    "information about emp (e.g. copyright, license, etc.)",
 	Long: userAgent + `
 
 The MIT License (MIT)

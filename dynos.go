@@ -24,12 +24,12 @@ Lists dynos. Shows the name, size, state, age, and command.
 
 Examples:
 
-    $ hk dynos
+    $ emp dynos
     run.3794  2X  up   1m  bash
     web.1     1X  up  15h  "blog /app /tmp/dst"
     web.2     1X  up   8h  "blog /app /tmp/dst"
 
-    $ hk dynos web
+    $ emp dynos web
     web.1     1X  up  15h  "blog /app /tmp/dst"
     web.2     1X  up   8h  "blog /app /tmp/dst"
 `,

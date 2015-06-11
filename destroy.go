@@ -19,11 +19,11 @@ accept confirmation via stdin.
 
 Example:
 
-    $ hk destroy myapp
+    $ emp destroy myapp
     warning: This will destroy myapp and its add-ons. Please type "myapp" to continue:
     Destroyed myapp.
 
-    $ echo myapp | hk destroy myapp
+    $ echo myapp | emp destroy myapp
     Destroyed myapp.
 `,
 }

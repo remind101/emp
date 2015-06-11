@@ -24,13 +24,13 @@ changing dyno size will restart all dynos of that type.
 
 Examples:
 
-    $ hk scale web=2
+    $ emp scale web=2
     Scaled myapp to web=2:1X.
 
-    $ hk scale web=2:1X worker=5:2X
+    $ emp scale web=2:1X worker=5:2X
     Scaled myapp to web=2:1X, worker=5:2X.
 
-    $ hk scale web=PX worker=1X
+    $ emp scale web=PX worker=1X
     Scaled myapp to web=2:PX, worker=5:1X.
 `,
 }
