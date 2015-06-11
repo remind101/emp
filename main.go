@@ -124,9 +124,6 @@ var commands = []*Command{
 	cmdSSLDestroy,
 	cmdURL,
 	cmdWhichApp,
-
-	// unlisted
-	cmdUpdate,
 }
 
 var (
@@ -157,15 +154,6 @@ func main() {
 	if len(args) < 1 || strings.IndexRune(args[0], '-') == 0 {
 		printUsageTo(os.Stderr)
 		os.Exit(2)
-	}
-
-	// Run the update command as early as possible to avoid the possibility of
-	// installations being stranded without updates due to errors in other code
-	if args[0] == cmdUpdate.Name() {
-		cmdUpdate.Run(cmdUpdate, args)
-		return
-	} else if updater != nil {
-		defer updater.backgroundRun() // doesn't run if os.Exit is called
 	}
 
 	if !term.IsANSI(os.Stdout) {
