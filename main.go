@@ -122,7 +122,6 @@ var commands = []*Command{
 	cmdSSLCertAdd,
 	cmdSSLCertRollback,
 	cmdSSLDestroy,
-	cmdStatus,
 	cmdURL,
 	cmdWhichApp,
 
