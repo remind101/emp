@@ -113,10 +113,6 @@ var commands = []*Command{
 	helpAbout,
 
 	// listed by hk help more
-	cmdAccountFeatures,
-	cmdAccountFeatureInfo,
-	cmdAccountFeatureEnable,
-	cmdAccountFeatureDisable,
 	cmdAPI,
 	cmdAuthorize,
 	cmdCreds,
