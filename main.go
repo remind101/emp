@@ -119,7 +119,6 @@ var commands = []*Command{
 	cmdGet,
 	cmdLogin,
 	cmdLogout,
-	cmdOpen,
 	cmdOrgs,
 	cmdPgList,
 	cmdPgInfo,
