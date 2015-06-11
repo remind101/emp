@@ -118,7 +118,6 @@ var commands = []*Command{
 	cmdGet,
 	cmdLogin,
 	cmdLogout,
-	cmdRegions,
 	cmdSSL,
 	cmdSSLCertAdd,
 	cmdSSLCertRollback,
