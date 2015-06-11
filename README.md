@@ -1,4 +1,4 @@
-# emp
+# emp [![Build Status](https://travis-ci.org/remind101/emp.svg?branch=master)](https://travis-ci.org/remind101/emp)
 
 A CLI for Empire.
 
