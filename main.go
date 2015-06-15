@@ -30,6 +30,7 @@ type Command struct {
 	Category string // i.e. "App", "Account", etc.
 	Short    string // `emp help` output
 	Long     string // `emp help cmd` output
+	Alias    string // Optional alias for the command.
 }
 
 func (c *Command) PrintUsage() {
@@ -159,7 +160,7 @@ func main() {
 	initClients()
 
 	for _, cmd := range commands {
-		if cmd.Name() == args[0] && cmd.Run != nil {
+		if matchesCommand(cmd, args[0]) && cmd.Run != nil {
 			defer recoverPanic()
 
 			cmd.Flag.SetDisableDuplicates(true) // disallow duplicate flag options
@@ -238,4 +239,13 @@ func mustApp() string {
 		printFatal(err.Error())
 	}
 	return name
+}
+
+// matchesCommand checks if the Command matches the command that we want to run.
+func matchesCommand(cmd *Command, want string) bool {
+	if cmd.Alias != "" && cmd.Alias == want {
+		return true
+	}
+
+	return cmd.Name() == want
 }
