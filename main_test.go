@@ -6,6 +6,10 @@ import (
 	"testing"
 )
 
+func init() {
+	os.Setenv("EMPIRE_API_URL", "http://localhost:8080")
+}
+
 func TestSSLEnabled(t *testing.T) {
 	initClients()
 
