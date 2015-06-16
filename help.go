@@ -27,7 +27,7 @@ EMPIRE_API_URL
   If username and password are present in the URL, they will
   override .netrc.
 
-  Its default value is https://api.heroku.com/
+  This environment variable is required.
 
 HEROKU_SSL_VERIFY
 

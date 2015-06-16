@@ -2,6 +2,7 @@ package hkclient
 
 import (
 	"crypto/tls"
+	"errors"
 	"net"
 	"net/http"
 	"net/url"
@@ -20,12 +21,12 @@ func New(nrc *NetRc, agent string) (*Clients, error) {
 	userAgent := agent + " " + heroku.DefaultUserAgent
 	ste := Clients{}
 
-	disableSSLVerify := false
-	ste.ApiURL = heroku.DefaultAPIURL
-	if s := os.Getenv("EMPIRE_API_URL"); s != "" {
-		ste.ApiURL = s
-		disableSSLVerify = true
+	ste.ApiURL = os.Getenv("EMPIRE_API_URL")
+	if ste.ApiURL == "" {
+		return nil, errors.New("EMPIRE_API_URL must be set")
 	}
+
+	disableSSLVerify := false
 
 	apiURL, err := url.Parse(ste.ApiURL)
 	if err != nil {
