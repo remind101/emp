@@ -27,22 +27,17 @@
 			"Rev": "48b5b9e3fedbde05cdb5f97c0b0930bda49e5e7a"
 		},
 		{
+			"ImportPath": "github.com/docker/docker/opts",
+			"Comment": "v1.4.1-3107-g5221fd2",
+			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
+		},
+		{
 			"ImportPath": "github.com/docker/docker/pkg/jsonmessage",
 			"Comment": "v1.4.1-3107-g5221fd2",
 			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
 		},
 		{
 			"ImportPath": "github.com/docker/docker/pkg/term",
-			"Comment": "v1.4.1-3107-g5221fd2",
-			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
-		},
-		{
-			"ImportPath": "github.com/docker/docker/pkg/timeutils",
-			"Comment": "v1.4.1-3107-g5221fd2",
-			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
-		},
-		{
-			"ImportPath": "github.com/docker/docker/pkg/units",
 			"Comment": "v1.4.1-3107-g5221fd2",
 			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
 		},
