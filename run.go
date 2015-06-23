@@ -12,7 +12,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
+	"github.com/bgentry/heroku-go"
 	"github.com/remind101/emp/term"
 )
 

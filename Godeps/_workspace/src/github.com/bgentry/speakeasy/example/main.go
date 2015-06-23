@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/speakeasy"
+	"github.com/bgentry/speakeasy"
 )
 
 func main() {

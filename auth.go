@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
-	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/speakeasy"
+	"github.com/bgentry/heroku-go"
+	"github.com/bgentry/speakeasy"
 	"github.com/remind101/emp/hkclient"
 	"github.com/remind101/emp/term"
 )
