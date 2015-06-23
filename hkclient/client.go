@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
+	"github.com/bgentry/heroku-go"
 )
 
 type Clients struct {

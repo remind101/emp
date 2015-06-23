@@ -18,7 +18,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/remind101/emp/Godeps/_workspace/src/code.google.com/p/go-uuid/uuid"
+	"code.google.com/p/go-uuid/uuid"
 )
 
 const (

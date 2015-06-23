@@ -4,8 +4,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/remind101/emp/Godeps/_workspace/src/github.com/docker/docker/pkg/jsonmessage"
-	"github.com/remind101/emp/Godeps/_workspace/src/github.com/docker/docker/pkg/term"
+	"github.com/docker/docker/pkg/jsonmessage"
+	"github.com/docker/docker/pkg/term"
 )
 
 var cmdDeploy = &Command{

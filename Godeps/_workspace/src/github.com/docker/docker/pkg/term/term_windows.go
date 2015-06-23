@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/remind101/emp/Godeps/_workspace/src/github.com/docker/docker/pkg/term/winconsole"
+	"github.com/docker/docker/pkg/term/winconsole"
 )
 
 // State holds the console mode for the terminal.
