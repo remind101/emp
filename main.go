@@ -91,6 +91,7 @@ var commands = []*Command{
 	cmdRollback,
 	cmdScale,
 	cmdRestart,
+	cmdEnvLoad,
 	cmdSet,
 	cmdUnset,
 	cmdEnv,

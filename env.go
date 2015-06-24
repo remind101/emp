@@ -6,6 +6,8 @@ import (
 	"os"
 	"sort"
 	"strings"
+
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/docker/docker/opts"
 )
 
 var cmdEnv = &Command{
@@ -129,4 +131,45 @@ func runUnset(cmd *Command, args []string) {
 	_, err := client.ConfigVarUpdate(appname, config)
 	must(err)
 	log.Printf("Unset env vars and restarted %s.", appname)
+}
+
+var cmdEnvLoad = &Command{
+	Run:      runEnvLoad,
+	Usage:    "env-load <file>",
+	NeedsApp: true,
+	Category: "config",
+	Short:    "load env file",
+	Long: `
+Loads environment variables from a file.
+
+Example:
+
+    $ emp env-load app.env
+    Set env vars from app.env and restarted myapp.
+`,
+}
+
+func runEnvLoad(cmd *Command, args []string) {
+	appname := mustApp()
+	if len(args) != 1 {
+		cmd.PrintUsage()
+		os.Exit(2)
+	}
+
+	parsedVars, err := opts.ParseEnvFile(args[0])
+	must(err)
+
+	config := make(map[string]*string)
+	for _, value := range parsedVars {
+		kv := strings.SplitN(value, "=", 2)
+		if len(kv) == 1 {
+			config[kv[0]] = new(string)
+		} else {
+			config[kv[0]] = &kv[1]
+		}
+	}
+
+	_, err = client.ConfigVarUpdate(appname, config)
+	must(err)
+	log.Printf("Updated env vars from %s and restarted %s.", args[0], appname)
 }
