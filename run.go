@@ -1,9 +1,11 @@
 package main
 
 import (
+	"crypto/tls"
 	"io"
 	"net"
 	"net/http/httputil"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -108,8 +110,23 @@ func runRun(cmd *Command, args []string) {
 	req, err := client.NewRequest("POST", "/apps/"+appname+"/dynos", params)
 	must(err)
 
-	dial, err := net.Dial("tcp", "192.168.59.103:8080")
+	u, err := url.Parse(apiURL)
 	must(err)
+
+	protocol := u.Scheme
+	address := u.Path
+	if protocol != "unix" {
+		protocol = "tcp"
+		address = u.Host
+	}
+
+	dial, err := net.Dial(protocol, address)
+	must(err)
+
+	if u.Scheme == "https" {
+		dial = tls.Client(dial, nil)
+		must(err)
+	}
 
 	clientconn := httputil.NewClientConn(dial, nil)
 	defer clientconn.Close()
