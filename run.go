@@ -1,16 +1,12 @@
 package main
 
 import (
-	"bufio"
-	"crypto/tls"
 	"io"
-	"log"
-	"net/url"
+	"net"
+	"net/http/httputil"
 	"os"
-	"os/signal"
 	"strconv"
 	"strings"
-	"syscall"
 
 	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
 	"github.com/remind101/emp/term"
@@ -98,76 +94,51 @@ func runRun(cmd *Command, args []string) {
 	}
 
 	command := strings.Join(args, " ")
-	dyno, err := client.DynoCreate(appname, command, &opts)
+	params := struct {
+		Command string             `json:"command"`
+		Attach  *bool              `json:"attach,omitempty"`
+		Env     *map[string]string `json:"env,omitempty"`
+		Size    *string            `json:"size,omitempty"`
+	}{
+		Command: command,
+		Attach:  opts.Attach,
+		Env:     opts.Env,
+		Size:    opts.Size,
+	}
+	req, err := client.NewRequest("POST", "/apps/"+appname+"/dynos", params)
 	must(err)
 
-	if detachedRun {
-		log.Printf("Ran `%s` on %s as %s, detached.", dyno.Command, appname, dyno.Name)
-		return
-	}
-	log.Printf("Running `%s` on %s as %s:", dyno.Command, appname, dyno.Name)
+	dial, err := net.Dial("tcp", "192.168.59.103:8080")
+	must(err)
 
-	u, err := url.Parse(*dyno.AttachURL)
-	if err != nil {
-		printFatal(err.Error())
-	}
+	clientconn := httputil.NewClientConn(dial, nil)
+	defer clientconn.Close()
+	clientconn.Do(req)
+	rwc, br := clientconn.Hijack()
+	defer rwc.Close()
 
-	cn, err := tls.Dial("tcp", u.Host, nil)
-	if err != nil {
-		printFatal(err.Error())
-	}
-	defer cn.Close()
-
-	br := bufio.NewReader(cn)
-
-	_, err = io.WriteString(cn, u.Path[1:]+"\r\n")
-	if err != nil {
-		printFatal(err.Error())
-	}
-
-	for {
-		_, pre, err := br.ReadLine()
-		if err != nil {
-			printFatal(err.Error())
-		}
-		if !pre {
-			break
-		}
-	}
-
-	if term.IsTerminal(os.Stdin) && term.IsTerminal(os.Stdout) {
-		err = term.MakeRaw(os.Stdin)
-		if err != nil {
-			printFatal(err.Error())
-		}
-		defer term.Restore(os.Stdin)
-
-		sig := make(chan os.Signal)
-		signal.Notify(sig, os.Signal(syscall.SIGQUIT), os.Interrupt)
-		go func() {
-			defer term.Restore(os.Stdin)
-			for sg := range sig {
-				switch sg {
-				case os.Interrupt:
-					cn.Write([]byte{3})
-				case os.Signal(syscall.SIGQUIT):
-					cn.Write([]byte{28})
-				default:
-					panic("not reached")
-				}
-			}
-		}()
-	}
-
-	errc := make(chan error)
-	cp := func(a io.Writer, b io.Reader) {
-		_, err := io.Copy(a, b)
-		errc <- err
-	}
-
-	go cp(os.Stdout, br)
-	go cp(cn, os.Stdin)
-	if err = <-errc; err != nil {
-		printFatal(err.Error())
+	errChanOut := make(chan error, 1)
+	errChanIn := make(chan error, 1)
+	exit := make(chan bool)
+	go func() {
+		defer close(exit)
+		defer close(errChanOut)
+		var err error
+		_, err = io.Copy(os.Stdout, br)
+		errChanOut <- err
+	}()
+	go func() {
+		_, err := io.Copy(rwc, os.Stdin)
+		errChanIn <- err
+		rwc.(interface {
+			CloseWrite() error
+		}).CloseWrite()
+	}()
+	<-exit
+	select {
+	case err = <-errChanIn:
+		must(err)
+	case err = <-errChanOut:
+		must(err)
 	}
 }
