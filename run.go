@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/tls"
 	"io"
+	"log"
 	"net"
 	"net/http/httputil"
 	"net/url"
@@ -96,6 +97,14 @@ func runRun(cmd *Command, args []string) {
 	}
 
 	command := strings.Join(args, " ")
+	if detachedRun {
+		dyno, err := client.DynoCreate(appname, command, &opts)
+		must(err)
+
+		log.Printf("Ran `%s` on %s as %s, detached.", dyno.Command, appname, dyno.Name)
+		return
+	}
+
 	params := struct {
 		Command string             `json:"command"`
 		Attach  *bool              `json:"attach,omitempty"`
