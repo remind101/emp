@@ -117,6 +117,14 @@ func runRun(cmd *Command, args []string) {
 	rwc, br := clientconn.Hijack()
 	defer rwc.Close()
 
+	if term.IsTerminal(os.Stdin) && term.IsTerminal(os.Stdout) {
+		err = term.MakeRaw(os.Stdin)
+		if err != nil {
+			printFatal(err.Error())
+		}
+		defer term.Restore(os.Stdin)
+	}
+
 	errChanOut := make(chan error, 1)
 	errChanIn := make(chan error, 1)
 	exit := make(chan bool)
