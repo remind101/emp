@@ -10,14 +10,17 @@ import (
 
 	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
 	flag "github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/pflag"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/docker/docker/pkg/term"
 	"github.com/remind101/emp/Godeps/_workspace/src/github.com/mgutz/ansi"
 	"github.com/remind101/emp/hkclient"
-	"github.com/remind101/emp/term"
 )
 
 var (
 	apiURL = "http://localhost:8080"
 	stdin  = bufio.NewReader(os.Stdin)
+
+	inFd, outFd                 uintptr
+	isTerminalIn, isTerminalOut bool
 )
 
 type Command struct {
@@ -153,7 +156,10 @@ func main() {
 		os.Exit(2)
 	}
 
-	if !term.IsANSI(os.Stdout) {
+	inFd, isTerminalIn = term.GetFdInfo(os.Stdin)
+	outFd, isTerminalOut = term.GetFdInfo(os.Stdout)
+
+	if !isTerminalOut {
 		ansi.DisableColors(true)
 	}
 

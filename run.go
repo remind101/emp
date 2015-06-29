@@ -8,13 +8,11 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"os"
-	"os/signal"
 	"strconv"
 	"strings"
-	"syscall"
 
 	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
-	"github.com/remind101/emp/term"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/docker/docker/pkg/term"
 )
 
 var (
@@ -71,11 +69,7 @@ func runRun(cmd *Command, args []string) {
 	}
 	appname := mustApp()
 
-	cols, err := term.Cols()
-	if err != nil {
-		printFatal(err.Error())
-	}
-	lines, err := term.Lines()
+	w, err := term.GetWinsize(inFd)
 	if err != nil {
 		printFatal(err.Error())
 	}
@@ -84,8 +78,8 @@ func runRun(cmd *Command, args []string) {
 	opts := heroku.DynoCreateOpts{Attach: &attached}
 	if attached {
 		env := map[string]string{
-			"COLUMNS": strconv.Itoa(cols),
-			"LINES":   strconv.Itoa(lines),
+			"COLUMNS": strconv.Itoa(int(w.Width)),
+			"LINES":   strconv.Itoa(int(w.Height)),
 			"TERM":    os.Getenv("TERM"),
 		}
 		opts.Env = &env
@@ -145,28 +139,12 @@ func runRun(cmd *Command, args []string) {
 	rwc, br := clientconn.Hijack()
 	defer rwc.Close()
 
-	if term.IsTerminal(os.Stdin) && term.IsTerminal(os.Stdout) {
-		err = term.MakeRaw(os.Stdin)
+	if isTerminalIn && isTerminalOut {
+		state, err := term.SetRawTerminal(inFd)
 		if err != nil {
 			printFatal(err.Error())
 		}
-		defer term.Restore(os.Stdin)
-
-		sig := make(chan os.Signal)
-		signal.Notify(sig, os.Signal(syscall.SIGQUIT), os.Interrupt)
-		go func() {
-			defer term.Restore(os.Stdin)
-			for sg := range sig {
-				switch sg {
-				case os.Interrupt:
-					rwc.Write([]byte{3})
-				case os.Signal(syscall.SIGQUIT):
-					rwc.Write([]byte{28})
-				default:
-					panic("not reached")
-				}
-			}
-		}()
+		defer term.RestoreTerminal(inFd, state)
 	}
 
 	errChanOut := make(chan error, 1)
