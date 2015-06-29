@@ -8,8 +8,10 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"os"
+	"os/signal"
 	"strconv"
 	"strings"
+	"syscall"
 
 	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
 	"github.com/remind101/emp/term"
@@ -149,6 +151,22 @@ func runRun(cmd *Command, args []string) {
 			printFatal(err.Error())
 		}
 		defer term.Restore(os.Stdin)
+
+		sig := make(chan os.Signal)
+		signal.Notify(sig, os.Signal(syscall.SIGQUIT), os.Interrupt)
+		go func() {
+			defer term.Restore(os.Stdin)
+			for sg := range sig {
+				switch sg {
+				case os.Interrupt:
+					rwc.Write([]byte{3})
+				case os.Signal(syscall.SIGQUIT):
+					rwc.Write([]byte{28})
+				default:
+					panic("not reached")
+				}
+			}
+		}()
 	}
 
 	errChanOut := make(chan error, 1)
