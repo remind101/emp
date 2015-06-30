@@ -71,7 +71,16 @@ func runRun(cmd *Command, args []string) {
 
 	w, err := term.GetWinsize(inFd)
 	if err != nil {
-		printFatal(err.Error())
+		// If syscall.TIOCGWINSZ is not supported by the device, we're
+		// probably trying to run tests. Set w to some sensible default.
+		if err.Error() == "operation not supported by device" {
+			w = &term.Winsize{
+				Height: 20,
+				Width:  80,
+			}
+		} else {
+			printFatal(err.Error())
+		}
 	}
 
 	attached := !detachedRun
