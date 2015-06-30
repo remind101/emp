@@ -153,7 +153,10 @@ func runRun(cmd *Command, args []string) {
 
 	clientconn := httputil.NewClientConn(dial, nil)
 	defer clientconn.Close()
-	clientconn.Do(req)
+	_, err = clientconn.Do(req)
+	if err != nil && err != httputil.ErrPersistEOF {
+		printFatal(err.Error())
+	}
 	rwc, br := clientconn.Hijack()
 	defer rwc.Close()
 
