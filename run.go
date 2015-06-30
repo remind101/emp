@@ -125,12 +125,21 @@ func runRun(cmd *Command, args []string) {
 		address = u.Host
 	}
 
-	dial, err := net.Dial(protocol, address)
-	must(err)
-
 	if u.Scheme == "https" {
-		dial = tls.Client(dial, nil)
-		must(err)
+		address = address + ":443"
+	}
+
+	var dial net.Conn
+	if u.Scheme == "https" {
+		dial, err = tlsDial(protocol, address, &tls.Config{})
+		if err != nil {
+			printFatal(err.Error())
+		}
+	} else {
+		dial, err = net.Dial(protocol, address)
+		if err != nil {
+			printFatal(err.Error())
+		}
 	}
 
 	clientconn := httputil.NewClientConn(dial, nil)
