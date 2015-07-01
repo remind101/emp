@@ -10,7 +10,6 @@ import (
 	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
 	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/speakeasy"
 	"github.com/remind101/emp/hkclient"
-	"github.com/remind101/emp/term"
 )
 
 var cmdAuthorize = &Command{
@@ -169,7 +168,7 @@ func runLogin(cmd *Command, args []string) {
 }
 
 func readPassword(prompt string) (password string, err error) {
-	if acceptPasswordFromStdin && !term.IsTerminal(os.Stdin) {
+	if acceptPasswordFromStdin && !isTerminalIn {
 		_, err = fmt.Scanln(&password)
 		return
 	}

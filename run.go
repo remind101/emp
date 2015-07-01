@@ -1,19 +1,18 @@
 package main
 
 import (
-	"bufio"
 	"crypto/tls"
 	"io"
 	"log"
+	"net"
+	"net/http/httputil"
 	"net/url"
 	"os"
-	"os/signal"
 	"strconv"
 	"strings"
-	"syscall"
 
 	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
-	"github.com/remind101/emp/term"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/docker/docker/pkg/term"
 )
 
 var (
@@ -70,21 +69,26 @@ func runRun(cmd *Command, args []string) {
 	}
 	appname := mustApp()
 
-	cols, err := term.Cols()
+	w, err := term.GetWinsize(inFd)
 	if err != nil {
-		printFatal(err.Error())
-	}
-	lines, err := term.Lines()
-	if err != nil {
-		printFatal(err.Error())
+		// If syscall.TIOCGWINSZ is not supported by the device, we're
+		// probably trying to run tests. Set w to some sensible default.
+		if err.Error() == "operation not supported by device" {
+			w = &term.Winsize{
+				Height: 20,
+				Width:  80,
+			}
+		} else {
+			printFatal(err.Error())
+		}
 	}
 
 	attached := !detachedRun
 	opts := heroku.DynoCreateOpts{Attach: &attached}
 	if attached {
 		env := map[string]string{
-			"COLUMNS": strconv.Itoa(cols),
-			"LINES":   strconv.Itoa(lines),
+			"COLUMNS": strconv.Itoa(int(w.Width)),
+			"LINES":   strconv.Itoa(int(w.Height)),
 			"TERM":    os.Getenv("TERM"),
 		}
 		opts.Env = &env
@@ -98,76 +102,94 @@ func runRun(cmd *Command, args []string) {
 	}
 
 	command := strings.Join(args, " ")
-	dyno, err := client.DynoCreate(appname, command, &opts)
-	must(err)
-
 	if detachedRun {
+		dyno, err := client.DynoCreate(appname, command, &opts)
+		must(err)
+
 		log.Printf("Ran `%s` on %s as %s, detached.", dyno.Command, appname, dyno.Name)
 		return
 	}
-	log.Printf("Running `%s` on %s as %s:", dyno.Command, appname, dyno.Name)
 
-	u, err := url.Parse(*dyno.AttachURL)
-	if err != nil {
-		printFatal(err.Error())
+	params := struct {
+		Command string             `json:"command"`
+		Attach  *bool              `json:"attach,omitempty"`
+		Env     *map[string]string `json:"env,omitempty"`
+		Size    *string            `json:"size,omitempty"`
+	}{
+		Command: command,
+		Attach:  opts.Attach,
+		Env:     opts.Env,
+		Size:    opts.Size,
+	}
+	req, err := client.NewRequest("POST", "/apps/"+appname+"/dynos", params)
+	must(err)
+
+	u, err := url.Parse(apiURL)
+	must(err)
+
+	protocol := u.Scheme
+	address := u.Path
+	if protocol != "unix" {
+		protocol = "tcp"
+		address = u.Host
 	}
 
-	cn, err := tls.Dial("tcp", u.Host, nil)
-	if err != nil {
-		printFatal(err.Error())
-	}
-	defer cn.Close()
-
-	br := bufio.NewReader(cn)
-
-	_, err = io.WriteString(cn, u.Path[1:]+"\r\n")
-	if err != nil {
-		printFatal(err.Error())
+	if u.Scheme == "https" {
+		address = address + ":443"
 	}
 
-	for {
-		_, pre, err := br.ReadLine()
+	var dial net.Conn
+	if u.Scheme == "https" {
+		dial, err = tlsDial(protocol, address, &tls.Config{})
 		if err != nil {
 			printFatal(err.Error())
 		}
-		if !pre {
-			break
-		}
-	}
-
-	if term.IsTerminal(os.Stdin) && term.IsTerminal(os.Stdout) {
-		err = term.MakeRaw(os.Stdin)
+	} else {
+		dial, err = net.Dial(protocol, address)
 		if err != nil {
 			printFatal(err.Error())
 		}
-		defer term.Restore(os.Stdin)
-
-		sig := make(chan os.Signal)
-		signal.Notify(sig, os.Signal(syscall.SIGQUIT), os.Interrupt)
-		go func() {
-			defer term.Restore(os.Stdin)
-			for sg := range sig {
-				switch sg {
-				case os.Interrupt:
-					cn.Write([]byte{3})
-				case os.Signal(syscall.SIGQUIT):
-					cn.Write([]byte{28})
-				default:
-					panic("not reached")
-				}
-			}
-		}()
 	}
 
-	errc := make(chan error)
-	cp := func(a io.Writer, b io.Reader) {
-		_, err := io.Copy(a, b)
-		errc <- err
-	}
-
-	go cp(os.Stdout, br)
-	go cp(cn, os.Stdin)
-	if err = <-errc; err != nil {
+	clientconn := httputil.NewClientConn(dial, nil)
+	defer clientconn.Close()
+	_, err = clientconn.Do(req)
+	if err != nil && err != httputil.ErrPersistEOF {
 		printFatal(err.Error())
+	}
+	rwc, br := clientconn.Hijack()
+	defer rwc.Close()
+
+	if isTerminalIn && isTerminalOut {
+		state, err := term.SetRawTerminal(inFd)
+		if err != nil {
+			printFatal(err.Error())
+		}
+		defer term.RestoreTerminal(inFd, state)
+	}
+
+	errChanOut := make(chan error, 1)
+	errChanIn := make(chan error, 1)
+	exit := make(chan bool)
+	go func() {
+		defer close(exit)
+		defer close(errChanOut)
+		var err error
+		_, err = io.Copy(os.Stdout, br)
+		errChanOut <- err
+	}()
+	go func() {
+		_, err := io.Copy(rwc, os.Stdin)
+		errChanIn <- err
+		rwc.(interface {
+			CloseWrite() error
+		}).CloseWrite()
+	}()
+	<-exit
+	select {
+	case err = <-errChanIn:
+		must(err)
+	case err = <-errChanOut:
+		must(err)
 	}
 }

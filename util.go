@@ -16,7 +16,6 @@ import (
 	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
 	"github.com/remind101/emp/Godeps/_workspace/src/github.com/mgutz/ansi"
 	"github.com/remind101/emp/hkclient"
-	"github.com/remind101/emp/term"
 )
 
 var nrc *hkclient.NetRc
@@ -133,7 +132,7 @@ func printWarning(message string, args ...interface{}) {
 }
 
 func mustConfirm(warning, desired string) {
-	if term.IsTerminal(os.Stdin) {
+	if isTerminalIn {
 		printWarning(warning)
 		fmt.Printf("> ")
 	}
