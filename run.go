@@ -131,7 +131,7 @@ func runRun(cmd *Command, args []string) {
 	address := u.Path
 	if protocol != "unix" {
 		protocol = "tcp"
-		address = u.Host
+		address = u.Host + ":80"
 	}
 
 	if u.Scheme == "https" {
