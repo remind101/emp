@@ -32,7 +32,22 @@
 			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
 		},
 		{
+			"ImportPath": "github.com/docker/docker/pkg/homedir",
+			"Comment": "v1.4.1-3107-g5221fd2",
+			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
+		},
+		{
 			"ImportPath": "github.com/docker/docker/pkg/jsonmessage",
+			"Comment": "v1.4.1-3107-g5221fd2",
+			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
+		},
+		{
+			"ImportPath": "github.com/docker/docker/pkg/mflag",
+			"Comment": "v1.4.1-3107-g5221fd2",
+			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
+		},
+		{
+			"ImportPath": "github.com/docker/docker/pkg/parsers",
 			"Comment": "v1.4.1-3107-g5221fd2",
 			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
 		},
@@ -40,6 +55,26 @@
 			"ImportPath": "github.com/docker/docker/pkg/term",
 			"Comment": "v1.4.1-3107-g5221fd2",
 			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
+		},
+		{
+			"ImportPath": "github.com/docker/docker/pkg/timeutils",
+			"Comment": "v1.4.1-3107-g5221fd2",
+			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
+		},
+		{
+			"ImportPath": "github.com/docker/docker/pkg/ulimit",
+			"Comment": "v1.4.1-3107-g5221fd2",
+			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
+		},
+		{
+			"ImportPath": "github.com/docker/docker/pkg/units",
+			"Comment": "v1.4.1-3107-g5221fd2",
+			"Rev": "5221fd2ba5fbf78ad7a5d4edf039d54ae32141ef"
+		},
+		{
+			"ImportPath": "github.com/docker/libcontainer/user",
+			"Comment": "v2.2.1-23-g83a102c",
+			"Rev": "83a102cc68a09d890cce3b6c2e5c14c49e6373a0"
 		},
 		{
 			"ImportPath": "github.com/mgutz/ansi",

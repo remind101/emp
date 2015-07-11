@@ -8,9 +8,9 @@ import (
 	"regexp"
 	"strings"
 
-	flag "github.com/docker/docker/pkg/mflag"
-	"github.com/docker/docker/pkg/parsers"
-	"github.com/docker/docker/pkg/ulimit"
+	flag "github.com/remind101/emp/Godeps/_workspace/src/github.com/docker/docker/pkg/mflag"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/docker/docker/pkg/parsers"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/docker/docker/pkg/ulimit"
 )
 
 var (

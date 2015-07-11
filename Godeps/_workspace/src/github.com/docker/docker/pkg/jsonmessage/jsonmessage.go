@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/docker/docker/pkg/timeutils"
-	"github.com/docker/docker/pkg/units"
 	"github.com/remind101/emp/Godeps/_workspace/src/github.com/docker/docker/pkg/term"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/docker/docker/pkg/timeutils"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/docker/docker/pkg/units"
 )
 
 type JSONError struct {

@@ -3,7 +3,7 @@ package opts
 import (
 	"fmt"
 
-	"github.com/docker/docker/pkg/ulimit"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/docker/docker/pkg/ulimit"
 )
 
 type UlimitOpt struct {
