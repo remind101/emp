@@ -135,7 +135,7 @@ func runRun(cmd *Command, args []string) {
 	}
 
 	if u.Scheme == "https" {
-		address = address + ":443"
+		address = u.Host + ":443"
 	}
 
 	var dial net.Conn
