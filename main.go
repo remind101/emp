@@ -25,9 +25,10 @@ var (
 
 type Command struct {
 	// args does not include the command name
-	Run      func(cmd *Command, args []string)
-	Flag     flag.FlagSet
-	NeedsApp bool
+	Run         func(cmd *Command, args []string)
+	Flag        flag.FlagSet
+	NeedsApp    bool
+	OptionalApp bool
 
 	Usage    string // first word is the command name
 	Category string // i.e. "App", "Account", etc.
@@ -51,7 +52,7 @@ func (c *Command) PrintLongUsage() {
 }
 
 func (c *Command) FullUsage() string {
-	if c.NeedsApp {
+	if c.NeedsApp || c.OptionalApp {
 		return c.Name() + " [-a <app or remote>]" + strings.TrimPrefix(c.Usage, c.Name())
 	}
 	return c.Usage
@@ -177,7 +178,7 @@ func main() {
 			cmd.Flag.Usage = func() {
 				cmd.PrintUsage()
 			}
-			if cmd.NeedsApp {
+			if cmd.NeedsApp || cmd.OptionalApp {
 				cmd.Flag.StringVarP(&flagApp, "app", "a", "", "app name")
 			}
 			if err := cmd.Flag.Parse(args[1:]); err == flag.ErrHelp {
@@ -192,10 +193,10 @@ func main() {
 					flagApp = gitRemoteApp
 				}
 			}
-			if cmd.NeedsApp {
+			if cmd.NeedsApp || cmd.OptionalApp {
 				a, err := app()
 				switch {
-				case err == errMultipleHerokuRemotes, err == nil && a == "":
+				case err == errMultipleHerokuRemotes && cmd.NeedsApp, err == nil && a == "" && cmd.NeedsApp:
 					msg := "no app specified"
 					if err != nil {
 						msg = err.Error()
@@ -203,7 +204,7 @@ func main() {
 					printError(msg)
 					cmd.PrintUsage()
 					os.Exit(2)
-				case err != nil:
+				case err != nil && cmd.NeedsApp:
 					printFatal(err.Error())
 				}
 			}
