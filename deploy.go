@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"os"
 
@@ -9,10 +10,11 @@ import (
 )
 
 var cmdDeploy = &Command{
-	Run:      runDeploy,
-	Usage:    "deploy [<registry>]<image>:[<tag>]",
-	Category: "deploy",
-	Short:    "deploy a docker image",
+	Run:         runDeploy,
+	Usage:       "deploy [<registry>]<image>:[<tag>]",
+	OptionalApp: true,
+	Category:    "deploy",
+	Short:       "deploy a docker image",
 	Long: `
 Deploy is used to deploy a docker image to an app.
 Examples:
@@ -46,8 +48,16 @@ func runDeploy(cmd *Command, args []string) {
 	image := args[0]
 	form := &PostDeployForm{Image: image}
 
+	var endpoint string
+	appName, _ := app()
+	if appName != "" {
+		endpoint = fmt.Sprintf("/apps/%s/deploys", appName)
+	} else {
+		endpoint = "/deploys"
+	}
+
 	go func() {
-		must(client.Post(w, "/deploys", form))
+		must(client.Post(w, endpoint, form))
 		must(w.Close())
 	}()
 
