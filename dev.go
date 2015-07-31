@@ -3,5 +3,5 @@
 package main
 
 const (
-	Version = "dev"
+	Version = "0.9.1"
 )

@@ -3,3 +3,5 @@ emp
 *.*~
 *.swp
 .env*
+
+build/
