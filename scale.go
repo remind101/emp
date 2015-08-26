@@ -11,9 +11,11 @@ import (
 	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
 )
 
+var listMode bool
+
 var cmdScale = &Command{
 	Run:      runScale,
-	Usage:    "scale <type>=[<qty>]:[<size>]...",
+	Usage:    "scale [-l] <type>=[<qty>]:[<size>]...",
 	NeedsApp: true,
 	Category: "dyno",
 	Short:    "change dyno quantities and sizes",
@@ -21,6 +23,10 @@ var cmdScale = &Command{
 Scale changes the quantity of dynos (horizontal scale) and/or the
 dyno size (vertical scale) for each process type. Note that
 changing dyno size will restart all dynos of that type.
+
+Options:
+
+    -l display the current scale
 
 Examples:
 
@@ -35,9 +41,17 @@ Examples:
 `,
 }
 
+func init() {
+	cmdScale.Flag.BoolVarP(&listMode, "list", "l", false, "display the current scale")
+}
+
 // takes args of the form "web=1", "worker=3X", web=4:2X etc
 func runScale(cmd *Command, args []string) {
 	appname := mustApp()
+	if listMode {
+		listScale(appname)
+		os.Exit(0)
+	}
 	if len(args) == 0 {
 		cmd.PrintUsage()
 		os.Exit(2)
@@ -73,15 +87,41 @@ func runScale(cmd *Command, args []string) {
 
 	sortedFormations := formationsByType(formations)
 	sort.Sort(sortedFormations)
-	results := make([]string, len(types))
-	rindex := 0
-	for _, f := range sortedFormations {
-		if _, exists := types[f.Type]; exists {
-			results[rindex] = f.Type + "=" + strconv.Itoa(f.Quantity) + ":" + f.Size
-			rindex += 1
-		}
-	}
+	results := formatResults(formations)
 	log.Printf("Scaled %s to %s.", appname, strings.Join(results, ", "))
+}
+
+func listScale(appname string) {
+	formationsMap := make(map[string]*heroku.Formation)
+	dynos, err := client.DynoList(appname, nil)
+	must(err)
+	for _, d := range dynos {
+		if _, ok := formationsMap[d.Type]; !ok {
+			formationsMap[d.Type] = &heroku.Formation{Type: d.Type, Size: d.Size}
+		}
+
+		f := formationsMap[d.Type]
+		f.Quantity++
+	}
+
+	formations := make(formationsByType, 0)
+	for _, f := range formationsMap {
+		formations = append(formations, *f)
+	}
+
+	sort.Sort(formations)
+	results := formatResults(formations)
+	log.Printf("%s current scale is %s", appname, strings.Join(results, " "))
+}
+
+func formatResults(formations []heroku.Formation) []string {
+	results := make([]string, len(formations))
+	rindex := 0
+	for _, f := range formations {
+		results[rindex] = f.Type + "=" + strconv.Itoa(f.Quantity) + ":" + f.Size
+		rindex += 1
+	}
+	return results
 }
 
 var errInvalidScaleArg = errors.New("invalid argument")
