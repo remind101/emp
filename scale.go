@@ -111,7 +111,7 @@ func listScale(appname string) {
 
 	sort.Sort(formations)
 	results := formatResults(formations)
-	log.Printf("%s current scale is %s", appname, strings.Join(results, " "))
+	log.Println(strings.Join(results, " "))
 }
 
 func formatResults(formations []heroku.Formation) []string {
