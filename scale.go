@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	heroku "github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
 )
 
 var listMode bool
@@ -87,25 +87,17 @@ func runScale(cmd *Command, args []string) {
 
 	sortedFormations := formationsByType(formations)
 	sort.Sort(sortedFormations)
-	results := make([]string, len(types))
-	rindex := 0
-	for _, f := range sortedFormations {
-		if _, exists := types[f.Type]; exists {
-			results[rindex] = f.Type + "=" + strconv.Itoa(f.Quantity) + ":" + f.Size
-			rindex += 1
-		}
-	}
+	results := formatResults(formations)
 	log.Printf("Scaled %s to %s.", appname, strings.Join(results, ", "))
 }
 
 func listScale(appname string) {
-	formationsMap := make(map[string]heroku.Formation)
+	formationsMap := make(map[string]*heroku.Formation)
 	dynos, err := client.DynoList(appname, nil)
 	must(err)
 	for _, d := range dynos {
-		log.Printf("type: %s size: %sn", d.Type, d.Size)
 		if _, ok := formationsMap[d.Type]; !ok {
-			formationsMap[d.Type] = heroku.Formation{Type: d.Type, Size: d.Size}
+			formationsMap[d.Type] = &heroku.Formation{Type: d.Type, Size: d.Size}
 		}
 
 		f := formationsMap[d.Type]
@@ -114,17 +106,22 @@ func listScale(appname string) {
 
 	formations := make(formationsByType, 0)
 	for _, f := range formationsMap {
-		formations = append(formations, f)
+		formations = append(formations, *f)
 	}
 
 	sort.Sort(formations)
+	results := formatResults(formations)
+	log.Printf("%s current scale is %s", appname, strings.Join(results, " "))
+}
+
+func formatResults(formations []heroku.Formation) []string {
 	results := make([]string, len(formations))
 	rindex := 0
 	for _, f := range formations {
 		results[rindex] = f.Type + "=" + strconv.Itoa(f.Quantity) + ":" + f.Size
 		rindex += 1
 	}
-	log.Printf("%s is currently at %s.", appname, strings.Join(results, ", "))
+	return results
 }
 
 var errInvalidScaleArg = errors.New("invalid argument")
