@@ -2,11 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"os"
-
-	"github.com/docker/docker/pkg/jsonmessage"
-	"github.com/docker/docker/pkg/term"
 )
 
 var cmdLog = &Command{
@@ -30,15 +26,8 @@ func runLog(cmd *Command, args []string) {
 		os.Exit(2)
 	}
 
-	r, w := io.Pipe()
 	appName := mustApp()
 	endpoint := fmt.Sprintf("/apps/%s/log-sessions", appName)
 
-	go func() {
-		must(client.Post(w, endpoint, nil))
-		must(w.Close())
-	}()
-
-	outFd, isTerminalOut := term.GetFdInfo(os.Stdout)
-	must(jsonmessage.DisplayJSONMessagesStream(r, os.Stdout, outFd, isTerminalOut))
+	must(client.Post(os.Stdout, endpoint, nil))
 }
