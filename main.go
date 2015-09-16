@@ -100,6 +100,7 @@ var commands = []*Command{
 	cmdUnset,
 	cmdEnv,
 	cmdRun,
+	cmdLog,
 	cmdInfo,
 	cmdRename,
 	cmdDestroy,
