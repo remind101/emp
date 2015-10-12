@@ -6,17 +6,12 @@
 	],
 	"Deps": [
 		{
-			"ImportPath": "code.google.com/p/go-uuid/uuid",
-			"Comment": "null-10",
-			"Rev": "5fac954758f5aa282478dc07fbb8709fe9575184"
-		},
-		{
 			"ImportPath": "github.com/bgentry/go-netrc/netrc",
 			"Rev": "9fd32a8b3d3d3f9d43c341bfe098430e07609480"
 		},
 		{
 			"ImportPath": "github.com/bgentry/heroku-go",
-			"Rev": "c9a242427d2d01070c20b993845e4cff410b20c1"
+			"Rev": "ee4032d686ae18a765ac0df68c9524fba2a29ce3"
 		},
 		{
 			"ImportPath": "github.com/bgentry/pflag",
@@ -79,6 +74,10 @@
 		{
 			"ImportPath": "github.com/mgutz/ansi",
 			"Rev": "376eb392d7d7e2ae025da0037c73cf8c20a428d8"
+		},
+		{
+			"ImportPath": "github.com/pborman/uuid",
+			"Rev": "cccd189d45f7ac3368a0d127efb7f4d08ae0b655"
 		}
 	]
 }

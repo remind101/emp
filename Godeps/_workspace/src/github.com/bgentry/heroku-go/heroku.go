@@ -18,7 +18,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/remind101/emp/Godeps/_workspace/src/code.google.com/p/go-uuid/uuid"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/pborman/uuid"
 )
 
 const (
@@ -152,7 +152,7 @@ func (c *Client) NewRequest(method, path string, body interface{}) (*http.Reques
 	if ctype != "" {
 		req.Header.Set("Content-Type", ctype)
 	}
-	req.SetBasicAuth("", c.Password)
+	req.SetBasicAuth(c.Username, c.Password)
 	for k, v := range c.AdditionalHeaders {
 		req.Header[k] = v
 	}
