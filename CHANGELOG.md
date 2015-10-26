@@ -2,6 +2,17 @@
 
 ## HEAD
 
+## 0.9.2 (2015-10-26)
+
+**Features**
+
+* emp log command #25
+* display process counts (emp scale -l) #22
+
+**Misc**
+
+* updated heroku-go #31
+
 ## 0.9.1 (2015-07-31)
 
 **Features**
