@@ -1,17 +1,18 @@
 {
 	"ImportPath": "github.com/remind101/emp",
-	"GoVersion": "go1.4.2",
+	"GoVersion": "go1.5.1",
 	"Packages": [
 		"./..."
 	],
 	"Deps": [
 		{
-			"ImportPath": "github.com/bgentry/go-netrc/netrc",
-			"Rev": "9fd32a8b3d3d3f9d43c341bfe098430e07609480"
+			"ImportPath": "code.google.com/p/go-uuid/uuid",
+			"Comment": "null-12",
+			"Rev": "7dda39b2e7d5e265014674c5af696ba4186679e9"
 		},
 		{
-			"ImportPath": "github.com/bgentry/heroku-go",
-			"Rev": "ee4032d686ae18a765ac0df68c9524fba2a29ce3"
+			"ImportPath": "github.com/bgentry/go-netrc/netrc",
+			"Rev": "9fd32a8b3d3d3f9d43c341bfe098430e07609480"
 		},
 		{
 			"ImportPath": "github.com/bgentry/pflag",
@@ -76,8 +77,9 @@
 			"Rev": "376eb392d7d7e2ae025da0037c73cf8c20a428d8"
 		},
 		{
-			"ImportPath": "github.com/pborman/uuid",
-			"Rev": "cccd189d45f7ac3368a0d127efb7f4d08ae0b655"
+			"ImportPath": "github.com/remind101/empire/pkg/heroku",
+			"Comment": "v0.9.2-23-g671e438",
+			"Rev": "671e43874ee6346ed51daf192abf15b5fda8c12a"
 		}
 	]
 }

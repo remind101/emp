@@ -3,13 +3,12 @@ package hkclient
 import (
 	"crypto/tls"
 	"errors"
-	"net"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
 
-	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/remind101/empire/pkg/heroku"
 )
 
 type Clients struct {
@@ -63,20 +62,6 @@ func New(nrc *NetRc, agent string) (*Clients, error) {
 				strings.TrimSpace(h[i+1:]),
 			)
 		}
-	}
-
-	herokuAgentSocket := os.Getenv("HEROKU_AGENT_SOCK")
-	if herokuAgentSocket != "" {
-		// expand a tilde (i.e. `~/.heroku-agent.sock`)
-		if herokuAgentSocket[0] == '~' {
-			herokuAgentSocket = homePath() + herokuAgentSocket[1:]
-		}
-
-		tr.Dial = func(_ string, _ string) (net.Conn, error) {
-			return net.Dial("unix", herokuAgentSocket)
-		}
-
-		ste.Client.HerokuAgentSocket = herokuAgentSocket
 	}
 
 	return &ste, nil

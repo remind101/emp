@@ -8,7 +8,7 @@ import (
 	"text/tabwriter"
 	"time"
 
-	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/remind101/empire/pkg/heroku"
 )
 
 var cmdApps = &Command{
@@ -137,8 +137,7 @@ func listApp(w io.Writer, a hkapp) {
 	}
 	listRec(w,
 		a.Name,
-		abbrev(orgOrEmail, 20),
-		a.Region,
+		a.Cert,
 		prettyTime{t},
 	)
 }
@@ -166,6 +165,7 @@ type hkapp struct {
 	Stack                        string
 	UpdatedAt                    time.Time
 	WebURL                       string
+	Cert                         string
 }
 
 func fromApp(app heroku.App) (happ hkapp) {
@@ -190,6 +190,7 @@ func fromApp(app heroku.App) (happ hkapp) {
 		Stack:                        app.Stack.Name,
 		UpdatedAt:                    app.UpdatedAt,
 		WebURL:                       app.WebURL,
+		Cert:                         app.Cert,
 	}
 }
 

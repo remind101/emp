@@ -23,4 +23,5 @@ func runInfo(cmd *Command, args []string) {
 	must(err)
 	fmt.Printf("Name: %s\n", app.Name)
 	fmt.Printf("ID:   %s\n", app.Id)
+	fmt.Printf("Cert: %s\n", app.Cert)
 }
