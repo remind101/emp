@@ -8,10 +8,10 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
 	flag "github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/pflag"
 	"github.com/remind101/emp/Godeps/_workspace/src/github.com/docker/docker/pkg/term"
 	"github.com/remind101/emp/Godeps/_workspace/src/github.com/mgutz/ansi"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/remind101/empire/pkg/heroku"
 	"github.com/remind101/emp/hkclient"
 )
 
@@ -35,6 +35,7 @@ type Command struct {
 	Short    string // `emp help` output
 	Long     string // `emp help cmd` output
 	Alias    string // Optional alias for the command.
+	Hidden   bool   // Set to true to hide a command from usage information.
 }
 
 func (c *Command) PrintUsage() {
@@ -107,6 +108,7 @@ var commands = []*Command{
 	cmdDomains,
 	cmdDomainAdd,
 	cmdDomainRemove,
+	cmdCertAttach,
 	cmdDeploy,
 	cmdVersion,
 	cmdHelp,

@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	"github.com/remind101/emp/Godeps/_workspace/src/github.com/bgentry/heroku-go"
+	"github.com/remind101/emp/Godeps/_workspace/src/github.com/remind101/empire/pkg/heroku"
 )
 
 type Release struct {
