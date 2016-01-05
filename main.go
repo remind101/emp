@@ -153,6 +153,7 @@ func initClients() {
 
 func main() {
 	log.SetFlags(0)
+	log.SetOutput(os.Stdout)
 
 	// make sure command is specified, disallow global args
 	args := os.Args[1:]
